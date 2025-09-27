@@ -63,6 +63,10 @@ pip install -r requirements.txt
 
 # 3. Execute a aplicação
 python main.py
+
+# Em outro terminal, teste
+python test_server.py
+python test_burst.py
 ```
 
 ### Uso Básico

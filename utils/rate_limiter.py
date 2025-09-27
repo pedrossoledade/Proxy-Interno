@@ -5,6 +5,7 @@ class RateLimiter:
     _instance = None
 
     def __new__(cls, min_interval=1.0):
+        """Singleton: garante que só existe uma instância do RateLimiter"""
         if cls._instance is None:
             cls._instance = super(RateLimiter, cls).__new__(cls)
             cls._instance.min_interval = min_interval
@@ -12,15 +13,18 @@ class RateLimiter:
         return cls._instance
 
     def wait_for_slot(self):
+        """Aguarda até que seja permitido fazer uma nova requisição"""
         now = time.time()
         if now < self.next_allowed_time:
             sleep_time = self.next_allowed_time - now
             time.sleep(sleep_time)
 
     def update_after_response(self, response):
+        """Atualiza o rate limiter baseado na resposta da API externa"""
         now = time.time()
 
         if response.status_code == 429:
+            """Se recebeu rate limit (429), aplica penalidade"""
             try:
                 api_response = response.json()
                 error_msg = api_response.get("error", "")
@@ -39,6 +43,7 @@ class RateLimiter:
 
             self.next_allowed_time = now + 2.0
         else:
+            """Requisição bem-sucedida, espera 1 segundo para a próxima"""
             self.next_allowed_time = now + self.min_interval
 
 # Instância global única
