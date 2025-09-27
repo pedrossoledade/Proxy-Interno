@@ -1,0 +1,42 @@
+PROXY INTERNO - EXPLICAÇÃO COMPLETA
+
+OBJETIVO:
+- Criar um proxy que respeite o rate limiting de 1 requisição/segundo da API externa
+- Lidar com picos de até 20 requisições simultâneas sem violar o limite
+- Cache para evitar requisições repetidas
+
+FLUXO GERAL:
+1. Cliente → GET /proxy/score?cpf=123 → FastAPI
+2. FastAPI → Verifica cache → Se não tiver, coloca na fila
+3. Fila processa 1 requisição por segundo → API externa
+4. Resposta → Cache → Cliente
+
+COMPONENTES PRINCIPAIS:
+
+1. RATE LIMITER (Singleton):
+   - Garante intervalo mínimo de 1 segundo entre requisições
+   - Detecta penalidades (status 429) e ajusta o tempo de espera
+
+2. CACHE (Decorator Pattern):
+   - Armazena respostas recentes por 5 minutos (default)
+   - Evita chamadas desnecessárias à API externa
+
+3. REQUEST QUEUE (Singleton + Threading):
+   - Fila FIFO para organizar requisições
+   - Scheduler que processa 1 req/segundo
+   - Backpressure: fila cresce durante picos, depois esvazia
+
+4. FASTAPI:
+   - /proxy/score: endpoint principal
+   - /health: verificação de saúde
+   - /metrics: métricas do sistema (tamanho da fila, cache, etc)
+
+PADRÕES UTILIZADOS:
+- Singleton: RateLimiter e RequestQueue (uma instância global)
+- Decorator: Cache (@cached)
+- Proxy: O serviço inteiro é um proxy para a API externa
+
+COMO O CLIENT ID FUNCIONA:
+- O Client ID é passado pelo usuário final
+- Nosso proxy usa esse ID para fazer requisições à API externa
+- O proxy gerencia o rate limiting independente de qual Client ID está sendo usado
