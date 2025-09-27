@@ -184,7 +184,3 @@ class RateLimiter:
 def get_score(id_client, cpf):
     # Lógica da função
     return result
-
-- ✅ Seção de agradecimentos
-
-Quer que eu ajuste alguma coisa específica? 😊
