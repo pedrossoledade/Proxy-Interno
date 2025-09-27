@@ -55,8 +55,8 @@ proxy-score-api/
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/seu-usuario/proxy-score-api.git
-cd proxy-score-api
+git clone https://github.com/pedrossoledade/Proxy-Interno.git
+cd Proxy-Interno
 
 # 2. Instale as dependências
 pip install -r requirements.txt
