@@ -1,6 +1,10 @@
 import uvicorn
 import os
 
+# Configuração temporária para teste
+if not os.getenv("CLIENT_ID"):
+    os.environ["CLIENT_ID"] = "seu_client_id_aqui"  # ← Coloque seu Client ID aqui
+
 if __name__ == "__main__":
     if not os.getenv("CLIENT_ID"):
         print("ERRO: CLIENT_ID não configurado")
