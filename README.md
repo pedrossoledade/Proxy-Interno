@@ -93,7 +93,7 @@ Consulta o score de um CPF na API externa.
 
 **Exemplo:**
 ```bash
-curl "http://localhost:8000/proxy/score?cpf=03930956144&client_id=000"
+curl "http://localhost:8000/proxy/score?cpf=89336333089&client_id=000"
 ```
 
 ### `GET /health`
@@ -141,10 +141,15 @@ import requests
 
 response = requests.get(
     "http://localhost:8000/proxy/score",
-    params={"cpf": "03930956144", "client_id": "000"}
+    params={"cpf": "89336333089", "client_id": "000"}
 )
 print(response.json())
 ```
+
+## Dados utilizados no projeto
+
+Os **CPFs** presentes neste projeto foram **gerados artificialmente** para fins de teste e desenvolvimento, utilizando o [Gerador de CPF do site 4Devs](https://www.4devs.com.br/gerador_de_cpf).  
+Nenhum dos números corresponde a documentos reais de pessoas conhecidas.
 
 ## ⚙️ Configuração
 
